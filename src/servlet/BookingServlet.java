@@ -70,6 +70,7 @@ public class BookingServlet extends HttpServlet {
 
                 Vehicle v = vehicleDAO.getVehicleById(vehicleId);
                 double pricePerDay = (v != null) ? v.getPricePerDay() : 50.0;
+                String vName = (v != null) ? v.getBrand() + " " + v.getModel() : "the vehicle";
 
                 // Simple day-count calculation
                 long days = 3; // default fallback
@@ -84,10 +85,15 @@ public class BookingServlet extends HttpServlet {
 
                 Booking booking = new Booking(0, currentUser.getEmail(), vehicleId,
                         pickupDate, returnDate, pickupLocation, totalPrice, "pending");
-                bookingDAO.addBooking(booking);
+                boolean saved = bookingDAO.addBooking(booking);
 
-                session.setAttribute("successMsg", "Booking submitted! Our team will confirm shortly.");
-                response.sendRedirect("booking.jsp?booked=true");
+                if (saved) {
+                    session.setAttribute("successMsg", "🎉 Booking confirmed for " + vName + "! Our team will reach out to you shortly.");
+                } else {
+                    session.setAttribute("errorMsg", "Booking could not be saved. Please try again.");
+                }
+                // Redirect to My Bookings so the customer can see the new booking immediately
+                response.sendRedirect("my-bookings");
             } catch (Exception e) {
                 session.setAttribute("errorMsg", "Failed to create booking: " + e.getMessage());
                 response.sendRedirect("booking.jsp");
