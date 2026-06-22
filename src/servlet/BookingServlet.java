@@ -102,6 +102,19 @@ public class BookingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("vehicles.jsp");
+
+        HttpSession session = request.getSession(false);
+        User currentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+
+        // If not logged in, redirect to login
+        if (currentUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // Load this customer's bookings and forward to my-bookings page
+        java.util.List<model.Booking> myBookings = bookingDAO.getBookingsByUser(currentUser.getEmail());
+        request.setAttribute("myBookings", myBookings);
+        request.getRequestDispatcher("my-bookings.jsp").forward(request, response);
     }
 }

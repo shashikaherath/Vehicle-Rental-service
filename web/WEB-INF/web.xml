@@ -73,6 +73,10 @@
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/booking</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/my-bookings</url-pattern>
+    </servlet-mapping>
 
     <!-- ═══ SESSION CONFIGURATION ════════════════════════════════ -->
     <session-config>

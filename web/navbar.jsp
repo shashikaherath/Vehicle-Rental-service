@@ -39,7 +39,7 @@
           </li>
         <% } else if (currentUser != null) { %>
           <li class="nav-item">
-            <a class="nav-link nav-link-premium" href="my-bookings.jsp">My Bookings</a>
+            <a class="nav-link nav-link-premium" href="my-bookings">My Bookings</a>
           </li>
           <li class="nav-item d-flex align-items-center ms-lg-3 mt-2 mt-lg-0">
             <span class="text-white me-3 font-weight-500">Hello, <%= currentUser.getName() %></span>
