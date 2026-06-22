@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Vehicles | EliteDrive Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/admin.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════════ -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <a class="sidebar-brand" href="index.html">
+    <div class="sidebar-brand-icon"><i class="bi bi-speedometer2"></i></div>
+    <div><div class="sidebar-brand-text">EliteDrive</div></div>
+    <span class="sidebar-brand-badge ms-auto">Admin</span>
+  </a>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin"><a href="index.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
+      <li class="nav-item-admin"><a href="vehicles.html" class="nav-link-admin active"><span class="nav-icon"><i class="bi bi-car-front-fill"></i></span>Vehicles<span class="nav-badge">16</span></a></li>
+      <li class="nav-item-admin"><a href="bookings.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-calendar-check-fill"></i></span>Bookings<span class="nav-badge">3</span></a></li>
+      <li class="nav-item-admin"><a href="customers.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-people-fill"></i></span>Customers</a></li>
+    </ul>
+    <div class="sidebar-section-label">Reports</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin"><a href="reports.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-bar-chart-fill"></i></span>Reports</a></li>
+    </ul>
+    <div class="sidebar-section-label">Settings</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin"><a href="#" class="nav-link-admin" onclick="showAdminToast('Coming soon!','info');return false;"><span class="nav-icon"><i class="bi bi-gear-fill"></i></span>Settings</a></li>
+      <li class="nav-item-admin"><a href="#" class="nav-link-admin admin-logout-btn"><span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span>Logout</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">AD</div>
+      <div class="sidebar-user-info"><div class="sidebar-user-name">Admin User</div><div class="sidebar-user-role">Super Administrator</div></div>
+      <i class="bi bi-three-dots-vertical text-muted" style="font-size:0.85rem;"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══════════════════════════════════════════════ -->
+<div class="admin-main">
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <button class="sidebar-toggle" id="sidebarToggleTop"><i class="bi bi-list"></i></button>
+    <div>
+      <div class="topbar-page-title">Vehicles</div>
+      <div class="topbar-breadcrumb"><a href="index.html">Dashboard</a> / Manage Vehicles</div>
+    </div>
+    <div class="topbar-search ms-4 d-none d-md-block">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" id="topbarSearch" placeholder="Quick search…">
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" id="topbarBell" title="Notifications"><i class="bi bi-bell"></i><span class="topbar-notification-dot"></span></button>
+    </div>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-header-title">Manage Vehicles</h1>
+        <p class="page-header-subtitle">Add, edit or remove fleet vehicles. Showing <span id="tableRowCount">16</span> vehicles.</p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn-admin-outline" onclick="showAdminToast('Vehicle list exported!','success')">
+          <i class="bi bi-download"></i> Export CSV
+        </button>
+        <a href="add-vehicle.html" class="btn-admin-primary">
+          <i class="bi bi-plus-lg"></i> Add Vehicle
+        </a>
+      </div>
+    </div>
+
+    <!-- Vehicles Table Card -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <!-- Search + Filters -->
+        <div class="d-flex gap-3 flex-wrap align-items-center" style="flex:1">
+          <div class="table-search-wrap" style="min-width:200px;flex:1;max-width:320px;">
+            <i class="bi bi-search si"></i>
+            <input type="text" id="tableSearchInput" placeholder="Search vehicles…">
+          </div>
+          <select class="admin-select" id="tableFilterSelect" style="width:auto;max-width:160px;">
+            <option value="">All Types</option>
+            <option value="Car">Car</option>
+            <option value="Van">Van</option>
+            <option value="Motorbike">Motorbike</option>
+            <option value="Scooter">Scooter</option>
+            <option value="Bus">Bus</option>
+            <option value="Lorry">Lorry</option>
+            <option value="Truck">Truck</option>
+            <option value="Boat">Boat</option>
+          </select>
+          <select class="admin-select" id="statusFilterSelect" style="width:auto;max-width:160px;" onchange="filterByStatus(this.value)">
+            <option value="">All Status</option>
+            <option value="available">Available</option>
+            <option value="rented">Rented</option>
+            <option value="maintenance">Maintenance</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Vehicle</th>
+              <th>Type</th>
+              <th>Fuel</th>
+              <th>Seats</th>
+              <th>Daily Rate</th>
+              <th>Status</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="mainTableBody">
+            <!-- Row Template (ID, Brand/Model, Type, Fuel, Seats, Rate, Status, Rating) -->
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#001</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/car.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">Aether Spectre S</div><div class="table-sub">Hybrid · Automatic</div></div></div></td>
+              <td>Car</td><td>Hybrid</td><td>5</td>
+              <td><strong style="color:var(--text-primary)">$250</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.9</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing Aether Spectre S details','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" onclick="openEditModal({id:1,brand:'Aether',model:'Spectre S',type:'Car',fuel:'Hybrid',seats:5,rate:250,status:'available',transmission:'Automatic'})" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="Aether Spectre S"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#002</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/car.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">Apex Volante GTR</div><div class="table-sub">Petrol · Manual</div></div></div></td>
+              <td>Car</td><td>Petrol</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$320</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-rented">Rented</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.9</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing Apex Volante GTR','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal" onclick="openEditModal({id:2,brand:'Apex',model:'Volante GTR',type:'Car',fuel:'Petrol',seats:2,rate:320,status:'rented',transmission:'Manual'})"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="Apex Volante GTR"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#003</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/van.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">TransPro Cargo Master</div><div class="table-sub">Diesel · Automatic</div></div></div></td>
+              <td>Van</td><td>Diesel</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$110</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.6</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing TransPro Cargo Master','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal" onclick="openEditModal({id:3,brand:'TransPro',model:'Cargo Master',type:'Van',fuel:'Diesel',seats:2,rate:110,status:'available',transmission:'Automatic'})"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="TransPro Cargo Master"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#004</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/van.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">Ridgeline Combi 9</div><div class="table-sub">Petrol · Automatic</div></div></div></td>
+              <td>Van</td><td>Petrol</td><td>9</td>
+              <td><strong style="color:var(--text-primary)">$130</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.7</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing Ridgeline Combi 9','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal" onclick="openEditModal({id:4,brand:'Ridgeline',model:'Combi 9',type:'Van',fuel:'Petrol',seats:9,rate:130,status:'available',transmission:'Automatic'})"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="Ridgeline Combi 9"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#005</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/motorbike.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">ThunderRide Storm 750</div><div class="table-sub">Petrol · Manual</div></div></div></td>
+              <td>Motorbike</td><td>Petrol</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$75</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-rented">Rented</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.85</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing ThunderRide Storm 750','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal" onclick="openEditModal({id:5,brand:'ThunderRide',model:'Storm 750',type:'Motorbike',fuel:'Petrol',seats:2,rate:75,status:'rented',transmission:'Manual'})"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="ThunderRide Storm 750"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#006</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/motorbike.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">IronHorse Cruiser Classic</div><div class="table-sub">Petrol · Manual</div></div></div></td>
+              <td>Motorbike</td><td>Petrol</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$85</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.8</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing IronHorse Cruiser Classic','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="IronHorse Cruiser Classic"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#007</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/scooter.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">Zephyr City Glide 125</div><div class="table-sub">Petrol · Automatic</div></div></div></td>
+              <td>Scooter</td><td>Petrol</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$35</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.7</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing Zephyr City Glide','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="Zephyr City Glide 125"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#008</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/scooter.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">VoltRide Eco E-Scoot</div><div class="table-sub">Electric · Automatic</div></div></div></td>
+              <td>Scooter</td><td>Electric</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$40</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-maintenance">Maintenance</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.75</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing VoltRide Eco E-Scoot','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="VoltRide Eco E-Scoot"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#009</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/bus.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">OmniFleet Shuttle 24</div><div class="table-sub">Diesel · Automatic</div></div></div></td>
+              <td>Bus</td><td>Diesel</td><td>24</td>
+              <td><strong style="color:var(--text-primary)">$280</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.65</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing OmniFleet Shuttle 24','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="OmniFleet Shuttle 24"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#010</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/bus.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">CoachPro Grand Tourer 52</div><div class="table-sub">Diesel · Automatic</div></div></div></td>
+              <td>Bus</td><td>Diesel</td><td>52</td>
+              <td><strong style="color:var(--text-primary)">$480</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-rented">Rented</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.7</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing CoachPro Grand Tourer','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="CoachPro Grand Tourer 52"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#011</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/lorry.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">HaulKing Atlas 7.5T</div><div class="table-sub">Diesel · Manual</div></div></div></td>
+              <td>Lorry</td><td>Diesel</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$195</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.6</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing HaulKing Atlas','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="HaulKing Atlas 7.5T"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#012</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/lorry.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">SteelHaul Titan 18T</div><div class="table-sub">Diesel · Automatic</div></div></div></td>
+              <td>Lorry</td><td>Diesel</td><td>2</td>
+              <td><strong style="color:var(--text-primary)">$350</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.55</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing SteelHaul Titan','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="SteelHaul Titan 18T"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#013</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/truck.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">Vanguard Ranger Pro 4x4</div><div class="table-sub">Diesel · Automatic</div></div></div></td>
+              <td>Truck</td><td>Diesel</td><td>5</td>
+              <td><strong style="color:var(--text-primary)">$175</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.8</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing Vanguard Ranger Pro','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="Vanguard Ranger Pro 4x4"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#014</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/truck.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">TerraFlex Gladiator V8</div><div class="table-sub">Petrol · Automatic</div></div></div></td>
+              <td>Truck</td><td>Petrol</td><td>5</td>
+              <td><strong style="color:var(--text-primary)">$220</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.75</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing TerraFlex Gladiator','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="TerraFlex Gladiator V8"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#015</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/boat.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">AquaLux Riviera 28</div><div class="table-sub">Petrol · Automatic</div></div></div></td>
+              <td>Boat</td><td>Petrol</td><td>8</td>
+              <td><strong style="color:var(--text-primary)">$450</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.9</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing AquaLux Riviera 28','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="AquaLux Riviera 28"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+            <tr class="data-row">
+              <td style="color:var(--text-muted);font-size:0.78rem;">#016</td>
+              <td><div class="table-vehicle-cell"><img src="../assets/images/boat.jpg" class="table-vehicle-img" alt=""><div><div class="table-name">SpeedWave Jet Runner 22</div><div class="table-sub">Petrol · Automatic</div></div></div></td>
+              <td>Boat</td><td>Petrol</td><td>6</td>
+              <td><strong style="color:var(--text-primary)">$380</strong><span style="color:var(--text-muted);font-size:0.75rem">/day</span></td>
+              <td><span class="status-badge status-available">Available</span></td>
+              <td><span style="color:var(--accent-orange)"><i class="bi bi-star-fill" style="font-size:0.75rem"></i> 4.85</span></td>
+              <td><div class="action-btns">
+                <button class="btn-icon view" title="View" onclick="showAdminToast('Viewing SpeedWave Jet Runner','info')"><i class="bi bi-eye"></i></button>
+                <button class="btn-icon edit" title="Edit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="bi bi-pencil"></i></button>
+                <button class="btn-icon delete btn-delete-row" title="Delete" data-label="SpeedWave Jet Runner 22"><i class="bi bi-trash"></i></button>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="admin-pagination">
+        <span>Showing 1–16 of 16 vehicles</span>
+        <div class="pagination-btns">
+          <button class="page-btn" disabled><i class="bi bi-chevron-left" style="font-size:0.7rem"></i></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn" onclick="showAdminToast('Page 2 — coming soon','info')">2</button>
+          <button class="page-btn" onclick="showAdminToast('Next page','info')"><i class="bi bi-chevron-right" style="font-size:0.7rem"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD / EDIT VEHICLE MODAL ═══════════════════════════ -->
+<div class="modal fade admin-modal" id="vehicleModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="vehicleModalTitle"><i class="bi bi-car-front me-2 text-accent"></i>Add New Vehicle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="vehicleForm" onsubmit="submitVehicleForm(event)">
+          <input type="hidden" id="vehicleId">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="admin-label">Brand Name *</label>
+              <input type="text" class="admin-input" id="vBrand" placeholder="e.g. Aether" required>
+            </div>
+            <div class="col-md-6">
+              <label class="admin-label">Model Name *</label>
+              <input type="text" class="admin-input" id="vModel" placeholder="e.g. Spectre S" required>
+            </div>
+            <div class="col-md-4">
+              <label class="admin-label">Vehicle Type *</label>
+              <select class="admin-select" id="vType" required>
+                <option value="">Select type</option>
+                <option value="Car">Car</option>
+                <option value="Van">Van</option>
+                <option value="Motorbike">Motorbike</option>
+                <option value="Scooter">Scooter</option>
+                <option value="Bus">Bus</option>
+                <option value="Lorry">Lorry</option>
+                <option value="Truck">Truck</option>
+                <option value="Boat">Boat</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="admin-label">Fuel Type *</label>
+              <select class="admin-select" id="vFuel" required>
+                <option value="">Select fuel</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Electric">Electric</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="admin-label">Transmission *</label>
+              <select class="admin-select" id="vTransmission" required>
+                <option value="">Select</option>
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="admin-label">Number of Seats *</label>
+              <input type="number" class="admin-input" id="vSeats" placeholder="5" min="1" max="60" required>
+            </div>
+            <div class="col-md-4">
+              <label class="admin-label">Daily Rate (USD) *</label>
+              <input type="number" class="admin-input" id="vRate" placeholder="250" min="1" required>
+            </div>
+            <div class="col-md-4">
+              <label class="admin-label">Status *</label>
+              <select class="admin-select" id="vStatus" required>
+                <option value="available">Available</option>
+                <option value="rented">Rented</option>
+                <option value="maintenance">Maintenance</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="admin-label">Description</label>
+              <textarea class="admin-textarea" id="vDescription" placeholder="Brief description of the vehicle…"></textarea>
+            </div>
+            <div class="col-12">
+              <label class="admin-label">Image URL</label>
+              <input type="text" class="admin-input" id="vImage" placeholder="assets/images/car.jpg">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-admin-outline" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="vehicleForm" class="btn-admin-primary" id="vehicleSubmitBtn">
+          <i class="bi bi-plus-lg"></i> <span id="vehicleSubmitLabel">Add Vehicle</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal fade admin-modal" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2" style="color:var(--accent-orange)"></i>Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body"><p id="confirmMessage" style="color:var(--text-secondary);font-size:0.9rem;margin:0;"></p></div>
+      <div class="modal-footer">
+        <button type="button" class="btn-admin-outline" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn-admin-danger" id="confirmOkBtn"><i class="bi bi-trash me-1"></i>Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="adminToastWrap" class="admin-toast-wrap"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  /* Status filter */
+  function filterByStatus(val) {
+    document.querySelectorAll('#mainTableBody tr.data-row').forEach(row => {
+      const badge = row.querySelector('.status-badge');
+      if (!badge) return;
+      row.style.display = (!val || badge.className.includes('status-' + val)) ? '' : 'none';
+    });
+    updateRowCount();
+  }
+
+  /* Open edit modal pre-filled */
+  function openEditModal(v) {
+    document.getElementById('vehicleModalTitle').innerHTML = '<i class="bi bi-pencil me-2 text-accent"></i>Edit Vehicle';
+    document.getElementById('vehicleSubmitLabel').textContent = 'Save Changes';
+    document.getElementById('vehicleId').value  = v.id;
+    document.getElementById('vBrand').value      = v.brand || '';
+    document.getElementById('vModel').value      = v.model || '';
+    document.getElementById('vType').value       = v.type  || '';
+    document.getElementById('vFuel').value       = v.fuel  || '';
+    document.getElementById('vTransmission').value = v.transmission || '';
+    document.getElementById('vSeats').value      = v.seats || '';
+    document.getElementById('vRate').value       = v.rate  || '';
+    document.getElementById('vStatus').value     = v.status|| 'available';
+  }
+
+  /* Reset modal for add */
+  document.getElementById('vehicleModal').addEventListener('show.bs.modal', function(e) {
+    if (!e.relatedTarget || !e.relatedTarget.classList.contains('edit')) {
+      document.getElementById('vehicleModalTitle').innerHTML = '<i class="bi bi-car-front me-2 text-accent"></i>Add New Vehicle';
+      document.getElementById('vehicleSubmitLabel').textContent = 'Add Vehicle';
+      document.getElementById('vehicleForm').reset();
+      document.getElementById('vehicleId').value = '';
+    }
+  });
+
+  /* Form submit */
+  function submitVehicleForm(e) {
+    e.preventDefault();
+    const isEdit = !!document.getElementById('vehicleId').value;
+    const brand = document.getElementById('vBrand').value;
+    const model = document.getElementById('vModel').value;
+    bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
+    showAdminToast(isEdit ? `${brand} ${model} updated successfully!` : `${brand} ${model} added to fleet!`, 'success');
+    if (!isEdit) {
+      document.getElementById('tableRowCount').textContent =
+        parseInt(document.getElementById('tableRowCount').textContent) + 1;
+    }
+  }
+</script>
+</body>
+</html>

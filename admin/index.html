@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | EliteDrive Admin</title>
+  <meta name="description" content="EliteDrive Admin Dashboard — manage vehicles, bookings, and customers.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/admin.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════════ -->
+<aside class="admin-sidebar" id="adminSidebar">
+
+  <!-- Brand -->
+  <a class="sidebar-brand" href="index.html">
+    <div class="sidebar-brand-icon"><i class="bi bi-speedometer2"></i></div>
+    <div>
+      <div class="sidebar-brand-text">EliteDrive</div>
+    </div>
+    <span class="sidebar-brand-badge ms-auto">Admin</span>
+  </a>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin">
+        <a href="index.html" class="nav-link-admin active">
+          <span class="nav-icon"><i class="bi bi-grid-1x2-fill"></i></span>
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item-admin">
+        <a href="vehicles.html" class="nav-link-admin">
+          <span class="nav-icon"><i class="bi bi-car-front-fill"></i></span>
+          Vehicles
+          <span class="nav-badge">16</span>
+        </a>
+      </li>
+      <li class="nav-item-admin">
+        <a href="bookings.html" class="nav-link-admin">
+          <span class="nav-icon"><i class="bi bi-calendar-check-fill"></i></span>
+          Bookings
+          <span class="nav-badge">3</span>
+        </a>
+      </li>
+      <li class="nav-item-admin">
+        <a href="customers.html" class="nav-link-admin">
+          <span class="nav-icon"><i class="bi bi-people-fill"></i></span>
+          Customers
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-section-label">Reports</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin">
+        <a href="reports.html" class="nav-link-admin">
+          <span class="nav-icon"><i class="bi bi-bar-chart-fill"></i></span>
+          Reports
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-section-label">Settings</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin">
+        <a href="#" class="nav-link-admin" onclick="showAdminToast('Settings coming soon!','info');return false;">
+          <span class="nav-icon"><i class="bi bi-gear-fill"></i></span>
+          Settings
+        </a>
+      </li>
+      <li class="nav-item-admin">
+        <a href="#" class="nav-link-admin admin-logout-btn">
+          <span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span>
+          Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- User -->
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">AD</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">Admin User</div>
+        <div class="sidebar-user-role">Super Administrator</div>
+      </div>
+      <i class="bi bi-three-dots-vertical text-muted" style="font-size:0.85rem;"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═══════════════════════════════════════ -->
+<div class="admin-main">
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <button class="sidebar-toggle" id="sidebarToggleTop"><i class="bi bi-list"></i></button>
+    <div>
+      <div class="topbar-page-title">Dashboard</div>
+      <div class="topbar-breadcrumb">
+        <a href="index.html">Home</a> / Overview
+      </div>
+    </div>
+    <div class="topbar-search ms-4 d-none d-md-block">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" id="topbarSearch" placeholder="Quick search…">
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" id="topbarBell" title="Notifications">
+        <i class="bi bi-bell"></i>
+        <span class="topbar-notification-dot"></span>
+      </button>
+      <a href="../index.html" class="topbar-btn" title="View Site">
+        <i class="bi bi-box-arrow-up-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="admin-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-header-title">Welcome back, Admin 👋</h1>
+        <p class="page-header-subtitle">Here's what's happening across your fleet today.</p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn-admin-outline" onclick="showAdminToast('Report exported!','success')">
+          <i class="bi bi-download"></i> Export Report
+        </button>
+        <a href="add-vehicle.html" class="btn-admin-primary">
+          <i class="bi bi-plus-lg"></i> Add Vehicle
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Stat Cards ─────────────────────────────────── -->
+    <div class="row g-4 mb-4">
+
+      <!-- Total Vehicles -->
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card" style="--stat-color:#6366f1;--stat-rgb:99,102,241">
+          <div class="stat-header">
+            <div class="stat-icon"><i class="bi bi-car-front-fill"></i></div>
+            <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>+3</div>
+          </div>
+          <div class="stat-value" data-target="16">16</div>
+          <div class="stat-label">Total Vehicles</div>
+          <div class="stat-sub">12 available · 3 rented · 1 in maintenance</div>
+          <div class="stat-bars">
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar active"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Customers -->
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card" style="--stat-color:#06b6d4;--stat-rgb:6,182,212">
+          <div class="stat-header">
+            <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>+18</div>
+          </div>
+          <div class="stat-value" data-target="248">248</div>
+          <div class="stat-label">Total Customers</div>
+          <div class="stat-sub">224 active · 24 inactive</div>
+          <div class="stat-bars">
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar active"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Bookings -->
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card" style="--stat-color:#10b981;--stat-rgb:16,185,129">
+          <div class="stat-header">
+            <div class="stat-icon"><i class="bi bi-calendar-check-fill"></i></div>
+            <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>+7</div>
+          </div>
+          <div class="stat-value" data-target="134">134</div>
+          <div class="stat-label">Total Bookings</div>
+          <div class="stat-sub">3 pending · 118 completed · 13 approved</div>
+          <div class="stat-bars">
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar active"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue -->
+      <div class="col-sm-6 col-xl-3">
+        <div class="stat-card" style="--stat-color:#f59e0b;--stat-rgb:245,158,11">
+          <div class="stat-header">
+            <div class="stat-icon"><i class="bi bi-currency-dollar"></i></div>
+            <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>+12%</div>
+          </div>
+          <div class="stat-value" data-target="48720" data-prefix="$">$48,720</div>
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-sub">This month: $9,340 · Last month: $8,312</div>
+          <div class="stat-bars">
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar"></div><div class="stat-bar"></div>
+            <div class="stat-bar active"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Row 2: Revenue Chart + Activity ────────────── -->
+    <div class="row g-4 mb-4">
+
+      <!-- Monthly Revenue Chart -->
+      <div class="col-lg-7">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <div>
+              <div class="admin-card-title">Monthly Revenue</div>
+              <div class="admin-card-subtitle">Full year overview · 2026</div>
+            </div>
+            <select class="admin-select" style="width:auto;padding:6px 28px 6px 10px;font-size:0.8rem;">
+              <option>2026</option><option>2025</option>
+            </select>
+          </div>
+          <!-- Revenue bars -->
+          <div style="padding:24px 24px 8px;">
+            <div class="d-flex align-items-flex-end" style="height:130px;gap:6px;align-items:flex-end;">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:55%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Jan</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:68%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Feb</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:45%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Mar</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:78%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Apr</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:63%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">May</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div style="width:100%;background:linear-gradient(180deg,#f59e0b,rgba(245,158,11,0.4));border-radius:5px 5px 0 0;height:100%;box-shadow:0 0 12px rgba(245,158,11,0.35)"></div>
+                <span style="font-size:0.62rem;color:var(--accent-orange);font-weight:600;">Jun</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:40%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Jul</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:50%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Aug</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:35%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Sep</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:30%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Oct</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:25%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Nov</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div class="rev-bar" style="width:100%;background:linear-gradient(180deg,#6366f1,rgba(99,102,241,0.3));border-radius:5px 5px 0 0;height:20%"></div>
+                <span style="font-size:0.62rem;color:var(--text-muted)">Dec</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:24px;padding:12px 24px 20px;border-top:1px solid var(--border-subtle);margin-top:8px;flex-wrap:wrap;">
+            <div><span style="font-size:0.75rem;color:var(--text-muted)">YTD Revenue</span><div style="font-weight:700;color:var(--text-primary);font-size:1rem;">$48,720</div></div>
+            <div><span style="font-size:0.75rem;color:var(--text-muted)">Best Month</span><div style="font-weight:700;color:var(--accent-orange);font-size:1rem;">Jun — $9,340</div></div>
+            <div><span style="font-size:0.75rem;color:var(--text-muted)">Avg/Month</span><div style="font-weight:700;color:var(--text-primary);font-size:1rem;">$8,120</div></div>
+            <div><span style="font-size:0.75rem;color:var(--text-muted)">Growth</span><div style="font-weight:700;color:var(--accent-green);font-size:1rem;">+12.4%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="col-lg-5">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <div>
+              <div class="admin-card-title">Recent Activity</div>
+              <div class="admin-card-subtitle">Live feed of system events</div>
+            </div>
+            <button class="btn-admin-outline" style="padding:5px 12px;font-size:0.78rem;" onclick="showAdminToast('Activity log refreshed','success')">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-dot" style="background:rgba(16,185,129,0.1);color:var(--accent-green)"><i class="bi bi-check-circle-fill"></i></div>
+              <div class="activity-info">
+                <div class="activity-title">Booking <strong>#BK-1034</strong> approved — AquaLux Riviera 28</div>
+                <div class="activity-time"><i class="bi bi-clock"></i> 5 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:rgba(99,102,241,0.1);color:var(--accent-primary)"><i class="bi bi-person-plus-fill"></i></div>
+              <div class="activity-info">
+                <div class="activity-title">New customer registered — <strong>Priya Sharma</strong></div>
+                <div class="activity-time"><i class="bi bi-clock"></i> 22 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:rgba(245,158,11,0.1);color:var(--accent-orange)"><i class="bi bi-calendar-plus-fill"></i></div>
+              <div class="activity-info">
+                <div class="activity-title">New booking request — <strong>ThunderRide Storm 750</strong></div>
+                <div class="activity-time"><i class="bi bi-clock"></i> 45 minutes ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:rgba(239,68,68,0.1);color:var(--accent-red)"><i class="bi bi-x-circle-fill"></i></div>
+              <div class="activity-info">
+                <div class="activity-title">Booking <strong>#BK-1031</strong> cancelled by customer</div>
+                <div class="activity-time"><i class="bi bi-clock"></i> 1 hour ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:rgba(6,182,212,0.1);color:var(--accent-secondary)"><i class="bi bi-car-front-fill"></i></div>
+              <div class="activity-info">
+                <div class="activity-title">Vehicle added — <strong>VoltRide Eco E-Scoot</strong></div>
+                <div class="activity-time"><i class="bi bi-clock"></i> 2 hours ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:rgba(168,85,247,0.1);color:#a855f7"><i class="bi bi-cash-stack"></i></div>
+              <div class="activity-info">
+                <div class="activity-title">Payment received — <strong>$450.00</strong> from Marcus L.</div>
+                <div class="activity-time"><i class="bi bi-clock"></i> 3 hours ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Row 3: Fleet Summary + Pending Bookings ───── -->
+    <div class="row g-4 mb-4">
+
+      <!-- Fleet by Category -->
+      <div class="col-lg-5">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Fleet by Category</div>
+            <a href="vehicles.html" class="btn-admin-outline" style="padding:5px 12px;font-size:0.78rem;">View All</a>
+          </div>
+          <div style="padding:16px 24px;display:flex;flex-direction:column;gap:14px;">
+            <!-- Cars -->
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.82rem;color:var(--text-secondary);font-weight:500;"><i class="bi bi-car-front me-2 text-accent"></i>Cars</span>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">2 <span style="color:var(--text-muted);font-weight:400;">/ 2</span></span>
+              </div>
+              <div style="height:6px;background:var(--bg-hover);border-radius:3px;overflow:hidden;"><div style="height:100%;width:100%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:3px;"></div></div>
+            </div>
+            <!-- Vans -->
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.82rem;color:var(--text-secondary);font-weight:500;"><i class="bi bi-truck me-2 text-cyan"></i>Vans</span>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">1 <span style="color:var(--text-muted);font-weight:400;">/ 2</span></span>
+              </div>
+              <div style="height:6px;background:var(--bg-hover);border-radius:3px;overflow:hidden;"><div style="height:100%;width:50%;background:linear-gradient(90deg,#06b6d4,#38bdf8);border-radius:3px;"></div></div>
+            </div>
+            <!-- Motorbikes -->
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.82rem;color:var(--text-secondary);font-weight:500;"><i class="bi bi-bicycle me-2" style="color:var(--accent-orange)"></i>Motorbikes</span>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">2 <span style="color:var(--text-muted);font-weight:400;">/ 2</span></span>
+              </div>
+              <div style="height:6px;background:var(--bg-hover);border-radius:3px;overflow:hidden;"><div style="height:100%;width:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:3px;"></div></div>
+            </div>
+            <!-- Buses -->
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.82rem;color:var(--text-secondary);font-weight:500;"><i class="bi bi-bus-front me-2" style="color:var(--accent-green)"></i>Buses</span>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">1 <span style="color:var(--text-muted);font-weight:400;">/ 2</span></span>
+              </div>
+              <div style="height:6px;background:var(--bg-hover);border-radius:3px;overflow:hidden;"><div style="height:100%;width:50%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:3px;"></div></div>
+            </div>
+            <!-- Trucks -->
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.82rem;color:var(--text-secondary);font-weight:500;"><i class="bi bi-truck-flatbed me-2" style="color:#a855f7"></i>Trucks</span>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">2 <span style="color:var(--text-muted);font-weight:400;">/ 2</span></span>
+              </div>
+              <div style="height:6px;background:var(--bg-hover);border-radius:3px;overflow:hidden;"><div style="height:100%;width:100%;background:linear-gradient(90deg,#a855f7,#c084fc);border-radius:3px;"></div></div>
+            </div>
+            <!-- Boats -->
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.82rem;color:var(--text-secondary);font-weight:500;"><i class="bi bi-water me-2" style="color:var(--accent-secondary)"></i>Boats</span>
+                <span style="font-size:0.82rem;font-weight:700;color:var(--text-primary);">2 <span style="color:var(--text-muted);font-weight:400;">/ 2</span></span>
+              </div>
+              <div style="height:6px;background:var(--bg-hover);border-radius:3px;overflow:hidden;"><div style="height:100%;width:100%;background:linear-gradient(90deg,#06b6d4,#818cf8);border-radius:3px;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Bookings Table -->
+      <div class="col-lg-7">
+        <div class="admin-card h-100">
+          <div class="admin-card-header">
+            <div>
+              <div class="admin-card-title">Recent Bookings</div>
+              <div class="admin-card-subtitle">Latest rental transactions and status</div>
+            </div>
+            <a href="bookings.html" class="btn-admin-primary" style="padding:7px 14px;font-size:0.8rem;">
+              <i class="bi bi-calendar-check"></i> View All
+            </a>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Customer</th>
+                  <th>Vehicle</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span style="font-weight:600;color:var(--accent-primary)">#BK-1032</span></td>
+                  <td>Marcus Lawson</td>
+                  <td>ThunderRide Storm 750</td>
+                  <td><span style="font-weight:700;color:var(--accent-green)">$225.00</span></td>
+                  <td><span class="status-badge status-pending">Pending</span></td>
+                </tr>
+                <tr>
+                  <td><span style="font-weight:600;color:var(--accent-primary)">#BK-1033</span></td>
+                  <td>Priya Sharma</td>
+                  <td>Zephyr City Glide 125</td>
+                  <td><span style="font-weight:700;color:var(--accent-green)">$105.00</span></td>
+                  <td><span class="status-badge status-pending">Pending</span></td>
+                </tr>
+                <tr>
+                  <td><span style="font-weight:600;color:var(--accent-primary)">#BK-1034</span></td>
+                  <td>James Kowalski</td>
+                  <td>AquaLux Riviera 28</td>
+                  <td><span style="font-weight:700;color:var(--accent-green)">$1,350.00</span></td>
+                  <td><span class="status-badge status-pending">Pending</span></td>
+                </tr>
+                <tr>
+                  <td><span style="font-weight:600;color:var(--accent-primary)">#BK-1029</span></td>
+                  <td>Alexander Harris</td>
+                  <td>Aether Spectre S</td>
+                  <td><span style="font-weight:700;color:var(--accent-green)">$750.00</span></td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                </tr>
+                <tr>
+                  <td><span style="font-weight:600;color:var(--accent-primary)">#BK-1028</span></td>
+                  <td>Yuna Lee</td>
+                  <td>Vanguard Ranger Pro 4x4</td>
+                  <td><span style="font-weight:700;color:var(--accent-green)">$350.00</span></td>
+                  <td><span class="status-badge status-completed">Completed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-content -->
+</div><!-- /admin-main -->
+
+<!-- Confirm Modal -->
+<div class="modal fade admin-modal" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill text-orange me-2"></i>Confirm Action</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage" style="color:var(--text-secondary);font-size:0.9rem;">Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-admin-outline" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn-admin-danger" id="confirmOkBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="adminToastWrap" class="admin-toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

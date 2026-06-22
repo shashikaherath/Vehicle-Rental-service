@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Vehicle | EliteDrive Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/admin.css" rel="stylesheet">
+  <style>
+    .image-upload-zone {
+      border: 2px dashed var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 30px;
+      text-align: center;
+      background: var(--bg-hover);
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+    }
+    .image-upload-zone:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+    .image-upload-zone i {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+      color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ═══ SIDEBAR ═══════════════════════════════════════════ -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <a class="sidebar-brand" href="index.html">
+    <div class="sidebar-brand-icon"><i class="bi bi-speedometer2"></i></div>
+    <div><div class="sidebar-brand-text">EliteDrive</div></div>
+    <span class="sidebar-brand-badge ms-auto">Admin</span>
+  </a>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin"><a href="index.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
+      <li class="nav-item-admin"><a href="vehicles.html" class="nav-link-admin active"><span class="nav-icon"><i class="bi bi-car-front-fill"></i></span>Vehicles<span class="nav-badge">16</span></a></li>
+      <li class="nav-item-admin"><a href="bookings.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-calendar-check-fill"></i></span>Bookings<span class="nav-badge">3</span></a></li>
+      <li class="nav-item-admin"><a href="customers.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-people-fill"></i></span>Customers</a></li>
+    </ul>
+    <div class="sidebar-section-label">Reports</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin"><a href="reports.html" class="nav-link-admin"><span class="nav-icon"><i class="bi bi-bar-chart-fill"></i></span>Reports</a></li>
+    </ul>
+    <div class="sidebar-section-label">Settings</div>
+    <ul class="list-unstyled mb-0">
+      <li class="nav-item-admin"><a href="#" class="nav-link-admin" onclick="showAdminToast('Coming soon!','info');return false;"><span class="nav-icon"><i class="bi bi-gear-fill"></i></span>Settings</a></li>
+      <li class="nav-item-admin"><a href="#" class="nav-link-admin admin-logout-btn"><span class="nav-icon"><i class="bi bi-box-arrow-left"></i></span>Logout</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">AD</div>
+      <div class="sidebar-user-info"><div class="sidebar-user-name">Admin User</div><div class="sidebar-user-role">Super Administrator</div></div>
+      <i class="bi bi-three-dots-vertical text-muted" style="font-size:0.85rem;"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══════════════════════════════════════════════ -->
+<div class="admin-main">
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <button class="sidebar-toggle" id="sidebarToggleTop"><i class="bi bi-list"></i></button>
+    <div>
+      <div class="topbar-page-title">Add Vehicle</div>
+      <div class="topbar-breadcrumb"><a href="index.html">Dashboard</a> / <a href="vehicles.html">Vehicles</a> / Add New</div>
+    </div>
+    <div class="topbar-actions ms-auto">
+      <button class="topbar-btn" id="topbarBell" title="Notifications"><i class="bi bi-bell"></i><span class="topbar-notification-dot"></span></button>
+    </div>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-header-title">Add New Vehicle</h1>
+        <p class="page-header-subtitle">Create a new entry in the vehicle fleet database.</p>
+      </div>
+      <div>
+        <a href="vehicles.html" class="btn-admin-outline">
+          <i class="bi bi-arrow-left"></i> Back to Fleet
+        </a>
+      </div>
+    </div>
+
+    <!-- Form Panel -->
+    <div class="row">
+      <div class="col-xl-9">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title"><i class="bi bi-plus-circle me-2 text-accent"></i>Vehicle Specifications</div>
+          </div>
+          <div class="p-4">
+            <form id="addVehicleForm" onsubmit="submitForm(event)">
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="admin-label" for="vBrand">Brand *</label>
+                  <input type="text" class="admin-input" id="vBrand" placeholder="e.g. Toyota" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="admin-label" for="vModel">Model *</label>
+                  <input type="text" class="admin-input" id="vModel" placeholder="e.g. Premio / KDH" required>
+                </div>
+                
+                <div class="col-md-4">
+                  <label class="admin-label" for="vYear">Manufacture Year *</label>
+                  <input type="number" class="admin-input" id="vYear" placeholder="e.g. 2023" min="1980" max="2027" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="admin-label" for="vType">Vehicle Type *</label>
+                  <select class="admin-select" id="vType" required>
+                    <option value="">Select Category</option>
+                    <option value="Car">Car (Sedan/Hatchback)</option>
+                    <option value="Motorbike">Motorbike</option>
+                    <option value="Scooter">Three-Wheeler / Scooter</option>
+                    <option value="Van">Van</option>
+                    <option value="Bus">Bus</option>
+                    <option value="Lorry">Lorry</option>
+                    <option value="Truck">Truck / Pickup</option>
+                    <option value="Boat">Boat / Speedboat</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="admin-label" for="vRate">Daily Rental Price (USD) *</label>
+                  <input type="number" class="admin-input" id="vRate" placeholder="e.g. 80" min="1" required>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="admin-label" for="vFuel">Fuel Type *</label>
+                  <select class="admin-select" id="vFuel" required>
+                    <option value="">Select Fuel</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Electric">Electric</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="admin-label" for="vTransmission">Transmission *</label>
+                  <select class="admin-select" id="vTransmission" required>
+                    <option value="">Select Gearbox</option>
+                    <option value="Automatic">Automatic</option>
+                    <option value="Manual">Manual</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="admin-label" for="vSeats">Passenger Seats *</label>
+                  <input type="number" class="admin-input" id="vSeats" placeholder="e.g. 5" min="1" max="60" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="admin-label" for="vStatus">Availability Status *</label>
+                  <select class="admin-select" id="vStatus" required>
+                    <option value="available">Available (In Fleet)</option>
+                    <option value="rented">Rented (Currently Active)</option>
+                    <option value="maintenance">Maintenance (In Workshop)</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="admin-label">Vehicle Image Upload *</label>
+                  <div class="image-upload-zone" id="uploadZone" onclick="triggerFileSelect()">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                    <span id="uploadLabel">Drag & Drop Image or Click to Browse</span>
+                    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files)">
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="admin-label" for="vDescription">Description</label>
+                  <textarea class="admin-textarea" id="vDescription" placeholder="Provide details about features, mileage, condition, etc..."></textarea>
+                </div>
+
+                <div class="col-12 text-end">
+                  <button type="reset" class="btn-admin-outline me-2">Reset Fields</button>
+                  <button type="submit" class="btn-admin-primary"><i class="bi bi-check-lg"></i> Add to Fleet</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="adminToastWrap" class="admin-toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  let uploadedImageBase64 = '../assets/images/car.jpg'; // default placeholder
+
+  function triggerFileSelect() {
+    document.getElementById('fileInput').click();
+  }
+
+  function handleFile(files) {
+    if (files && files[0]) {
+      const file = files[0];
+      document.getElementById('uploadLabel').textContent = `Selected: ${file.name} (${Math.round(file.size/1024)} KB)`;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedImageBase64 = e.target.result;
+        showAdminToast('Image loaded successfully!', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Setup drag-and-drop mechanics
+  const zone = document.getElementById('uploadZone');
+  ['dragenter', 'dragover'].forEach(name => {
+    zone.addEventListener(name, e => { e.preventDefault(); zone.style.borderColor = 'var(--accent-primary)'; }, false);
+  });
+  ['dragleave', 'drop'].forEach(name => {
+    zone.addEventListener(name, e => { e.preventDefault(); zone.style.borderColor = 'var(--border-subtle)'; }, false);
+  });
+  zone.addEventListener('drop', e => {
+    handleFile(e.dataTransfer.files);
+  });
+
+  function submitForm(e) {
+    e.preventDefault();
+    const brand = document.getElementById('vBrand').value.trim();
+    const model = document.getElementById('vModel').value.trim();
+    const type = document.getElementById('vType').value;
+    const rate = document.getElementById('vRate').value;
+    const year = document.getElementById('vYear').value;
+
+    showAdminToast(`${brand} ${model} added to database successfully!`, 'success');
+    
+    // Simulate updating list counter or navigate back
+    setTimeout(() => {
+      window.location.href = 'vehicles.html';
+    }, 1200);
+  }
+</script>
+</body>
+</html>

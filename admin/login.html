@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | EliteDrive</title>
+  <meta name="description" content="Access EliteDrive Admin Dashboard.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/admin.css" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, rgba(11, 13, 20, 1) 90.2%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+    }
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      padding: 40px;
+      backdrop-filter: blur(12px);
+    }
+    .login-logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: white;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    }
+    .is-invalid {
+      border-color: var(--accent-red) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-logo">
+      <i class="bi bi-speedometer2"></i>
+    </div>
+    <div class="text-center mb-4">
+      <h3 class="fw-bold mb-1" style="background: linear-gradient(135deg, #f1f5f9 0%, var(--accent-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EliteDrive Admin</h3>
+      <p class="text-secondary small mb-0">Sign in to manage fleet and bookings</p>
+    </div>
+
+    <form id="login-form" novalidate>
+      <div class="mb-3">
+        <label for="login-email" class="admin-label">Admin Email</label>
+        <div class="position-relative">
+          <input type="email" id="login-email" class="admin-input" placeholder="admin@elitedrive.com" required>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="login-password" class="admin-label">Password</label>
+        <div class="position-relative">
+          <input type="password" id="login-password" class="admin-input" placeholder="••••••••" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-admin-primary w-100 justify-content-center py-2">
+        <i class="bi bi-box-arrow-in-right"></i> Log In
+      </button>
+
+      <div class="text-center mt-3">
+        <a href="../index.html" class="text-secondary small text-decoration-none hover-accent"><i class="bi bi-arrow-left"></i> Back to Main Site</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="adminToastWrap" class="admin-toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Simple self-contained Toast functionality for Login Page
+  function showAdminToast(message, type = 'success', duration = 3500) {
+    const wrap = document.getElementById('adminToastWrap');
+    const icons = { 
+      success: 'bi-check-circle-fill', 
+      error: 'bi-x-circle-fill', 
+      warning: 'bi-exclamation-triangle-fill', 
+      info: 'bi-info-circle-fill' 
+    };
+    const colors = { 
+      success: '#10b981', 
+      error: '#ef4444', 
+      warning: '#f59e0b', 
+      info: '#06b6d4' 
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `admin-toast ${type !== 'success' ? type : ''}`;
+    toast.innerHTML = `
+      <i class="bi ${icons[type] || icons.success}" style="color:${colors[type]};font-size:1.1rem;flex-shrink:0"></i>
+      <span>${message}</span>
+      <button onclick="this.parentElement.remove()" style="margin-left:auto;background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;">&times;</button>
+    `;
+    wrap.appendChild(toast);
+    setTimeout(() => { 
+      toast.style.opacity = '0'; 
+      toast.style.transform = 'translateX(100%)'; 
+      toast.style.transition = 'all 0.3s'; 
+      setTimeout(() => toast.remove(), 300); 
+    }, duration);
+  }
+
+  // Handle Admin Login submission
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email');
+    const password = document.getElementById('login-password');
+    
+    email.classList.remove('is-invalid');
+    password.classList.remove('is-invalid');
+
+    const emailVal = email.value.trim();
+    const passVal = password.value.trim();
+
+    if (emailVal === 'admin@elitedrive.com' && passVal === 'admin123') {
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      showAdminToast('Login successful! Redirecting to Dashboard...', 'success');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1200);
+    } else {
+      showAdminToast('Invalid admin credentials. Please try again.', 'error');
+      email.classList.add('is-invalid');
+      password.classList.add('is-invalid');
+    }
+  });
+
+  // Clear query parameters
+  if (window.location.search.includes('logout=true')) {
+    localStorage.removeItem('isAdminLoggedIn');
+    showAdminToast('You have been logged out.', 'info');
+  }
+</script>
+</body>
+</html>

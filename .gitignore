@@ -1,0 +1,11 @@
+# Compiled Java class files
+web/WEB-INF/classes/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store

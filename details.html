@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Details | EliteDrive</title>
+  <meta name="description" content="View high-resolution images and specifications for our premium rental vehicle collection.">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-premium fixed-top">
+    <div class="container">
+      <a class="navbar-brand navbar-brand-premium d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-speedometer2 text-info"></i>
+        <span>EliteDrive</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="listing.html">Vehicles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="about.html">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="contact.html">Contact</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav align-items-lg-center ms-lg-2" id="navbar-auth-section">
+          <!-- Populated dynamically via app.js -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Details Content Area -->
+  <main class="py-5 mt-5 flex-grow-1">
+    <div class="container py-4 mt-2" id="details-loading-container">
+      <!-- Loading indicator or target for error panel -->
+      <div class="text-center py-5">
+        <div class="spinner-border text-info" role="status">
+          <span class="visually-hidden">Loading details...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Details Wrapper (shown when loaded) -->
+    <div class="container py-4 mt-2 d-none" id="details-main-content">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="listing.html" class="text-info text-decoration-none small">Fleet</a></li>
+          <li class="breadcrumb-item text-secondary small active" aria-current="page" id="breadcrumb-car-name">Vehicle</li>
+        </ol>
+      </nav>
+
+      <div class="row g-4">
+        <!-- Gallery & Specifications (Left Column) -->
+        <div class="col-lg-8">
+          <!-- Large Vehicle Image -->
+          <div class="vehicle-gallery-container shadow-sm mb-4">
+            <img id="detail-image" src="" alt="Vehicle Image" class="vehicle-gallery-image">
+          </div>
+
+          <div class="glass-panel p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+              <span id="detail-category" class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-2 rounded-pill text-uppercase fw-semibold" style="font-size: 0.75rem;">Category</span>
+              <div class="d-flex align-items-center gap-1 text-warning">
+                <i class="bi bi-star-fill"></i>
+                <span id="detail-rating" class="fw-bold">4.9</span>
+                <span class="text-secondary small">(User Rating)</span>
+              </div>
+            </div>
+            
+            <h2 id="detail-title" class="fw-bold text-white mb-3">Brand Model</h2>
+            <p id="detail-description" class="text-secondary mb-4" style="line-height: 1.7;">
+              Detailed description loading...
+            </p>
+
+            <h4 class="fw-bold text-white h5 mb-3">Technical Specifications</h4>
+            <div class="specs-grid mb-4">
+              <div class="spec-box">
+                <div class="spec-label">Transmission</div>
+                <div class="spec-value" id="spec-transmission">Automatic</div>
+              </div>
+              <div class="spec-box">
+                <div class="spec-label">Fuel System</div>
+                <div class="spec-value" id="spec-fuel">Electric</div>
+              </div>
+              <div class="spec-box">
+                <div class="spec-label">Capacity</div>
+                <div class="spec-value" id="spec-seats">5 Seats</div>
+              </div>
+              <div class="spec-box">
+                <div class="spec-label">Pricing Rank</div>
+                <div class="spec-value" id="spec-price-rank">Premium</div>
+              </div>
+            </div>
+
+            <h4 class="fw-bold text-white h5 mb-3">Features & Conveniences</h4>
+            <div class="row g-2" id="detail-features-list">
+              <!-- Dynamically populated checklist -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Booking Summary (Right Column) -->
+        <div class="col-lg-4">
+          <div class="card-premium p-4 shadow-sm position-sticky" style="top: 100px; z-index: 10;">
+            <span class="text-secondary small">Daily Rental Rate</span>
+            <div class="d-flex align-items-baseline mb-3 mt-1">
+              <span class="text-info fw-extrabold display-5 fw-bold" id="detail-price">$0</span>
+              <span class="text-secondary ms-2 small">/ day</span>
+            </div>
+
+            <hr class="border-secondary border-opacity-20 my-3">
+
+            <div class="d-flex flex-column gap-3 mb-4">
+              <div class="d-flex gap-3 align-items-start">
+                <i class="bi bi-patch-check text-info fs-5"></i>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">No Hidden Charges</h6>
+                  <p class="text-secondary small mb-0">Prices include fuel surcharges, taxes, and service fees.</p>
+                </div>
+              </div>
+              <div class="d-flex gap-3 align-items-start">
+                <i class="bi bi-shield-check text-info fs-5"></i>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">Premium Insurance Included</h6>
+                  <p class="text-secondary small mb-0">Comprehensive coverage against damages and thefts.</p>
+                </div>
+              </div>
+              <div class="d-flex gap-3 align-items-start">
+                <i class="bi bi-arrow-repeat text-info fs-5"></i>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">Free Cancellations</h6>
+                  <p class="text-secondary small mb-0">Cancel up to 24 hours prior to booking for full refund.</p>
+                </div>
+              </div>
+            </div>
+
+            <button id="btn-book-now" class="btn btn-premium-primary w-100 py-3">
+              <i class="bi bi-calendar-check me-2"></i> Book This Vehicle Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-premium">
+    <div class="container text-center">
+      <p class="text-muted small mb-0">&copy; 2026 EliteDrive. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Global App JS -->
+  <script src="assets/js/app.js"></script>
+  <!-- Data JS -->
+  <script src="assets/js/data.js"></script>
+  <!-- Details Page JS -->
+  <script src="assets/js/details.js"></script>
+</body>
+</html>

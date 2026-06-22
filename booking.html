@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserve Vehicle | EliteDrive</title>
+  <meta name="description" content="Complete your vehicle reservation. Select dates, choose pick-up location, and view pricing breakdown.">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-premium fixed-top">
+    <div class="container">
+      <a class="navbar-brand navbar-brand-premium d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-speedometer2 text-info"></i>
+        <span>EliteDrive</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="listing.html">Vehicles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="about.html">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="contact.html">Contact</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav align-items-lg-center ms-lg-2" id="navbar-auth-section">
+          <!-- Populated dynamically via app.js -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Booking Area -->
+  <main class="py-5 mt-5 flex-grow-1">
+    <div class="container py-4 mt-2" id="booking-loading-container">
+      <div class="text-center py-5">
+        <div class="spinner-border text-info" role="status">
+          <span class="visually-hidden">Validating session...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking details grid (Revealed if authenticated) -->
+    <div class="container py-4 mt-2 d-none" id="booking-main-content">
+      <h1 class="section-title-gradient fw-bold mb-4 h2">Secure Reservation Checkout</h1>
+      
+      <div class="row g-4">
+        
+        <!-- Left Side: Reservation Form -->
+        <div class="col-lg-7">
+          <div class="glass-panel p-4 p-md-5">
+            <h3 class="fw-bold text-white mb-4 h5">1. Rental Details</h3>
+            <form id="booking-form" novalidate>
+              
+              <!-- Pickup Location -->
+              <div class="mb-3">
+                <label for="booking-location" class="form-label text-secondary small">Pick-up & Drop-off Location</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-transparent border-glass text-secondary">
+                    <i class="bi bi-geo-alt"></i>
+                  </span>
+                  <select id="booking-location" class="form-select form-control-premium" required>
+                    <option value="" disabled selected>Select locations...</option>
+                    <option value="Downtown HQ Showroom">Downtown HQ Showroom</option>
+                    <option value="International Airport Terminal 1">International Airport Terminal 1</option>
+                    <option value="International Airport Terminal 2">International Airport Terminal 2</option>
+                    <option value="Westside Luxury Parking Deck">Westside Luxury Parking Deck</option>
+                    <option value="North Metro Executive Airport VIP">North Metro Executive Airport VIP</option>
+                  </select>
+                  <div class="invalid-feedback">Please choose a pickup location.</div>
+                </div>
+              </div>
+
+              <!-- Pickup & Return Dates -->
+              <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                  <label for="booking-pickup-date" class="form-label text-secondary small">Pick-up Date</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-transparent border-glass text-secondary">
+                      <i class="bi bi-calendar-event"></i>
+                    </span>
+                    <input type="date" id="booking-pickup-date" class="form-control form-control-premium" required min="2026-06-20">
+                    <div class="invalid-feedback">Choose a pickup date.</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="booking-return-date" class="form-label text-secondary small">Return Date</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-transparent border-glass text-secondary">
+                      <i class="bi bi-calendar-check"></i>
+                    </span>
+                    <input type="date" id="booking-return-date" class="form-control form-control-premium" required min="2026-06-20">
+                    <div class="invalid-feedback" id="return-date-feedback">Choose a return date.</div>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="fw-bold text-white mb-3 h5 border-top border-secondary border-opacity-10 pt-4">2. Driver Specifications</h3>
+              <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                  <label class="form-label text-secondary small">Name on Driver's License</label>
+                  <input type="text" id="driver-name" class="form-control form-control-premium" readonly>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label text-secondary small">Contact Number</label>
+                  <input type="text" id="driver-phone" class="form-control form-control-premium" readonly>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="booking-comments" class="form-label text-secondary small">Special Requests (Optional)</label>
+                <textarea id="booking-comments" class="form-control form-control-premium" rows="3" placeholder="e.g. child seats, airport terminal meet & greet, specific vehicle adjustments"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-premium-primary w-100 py-3 mt-2">
+                <i class="bi bi-shield-lock me-2"></i> Confirm & Authorize Booking
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Side: Vehicle Card & Dynamic Invoicing -->
+        <div class="col-lg-5">
+          <!-- Vehicle Summary Card -->
+          <div class="card card-premium shadow-sm mb-4">
+            <div class="card-img-container" style="height: 160px;">
+              <span id="booking-card-category" class="badge-category">Category</span>
+              <img id="booking-card-image" src="" class="card-img-top" alt="Vehicle Summary">
+            </div>
+            <div class="card-body p-4">
+              <h4 id="booking-card-title" class="fw-bold text-white h5">Brand Model</h4>
+              <div class="d-flex align-items-center gap-1 text-warning small mb-3">
+                <i class="bi bi-star-fill"></i>
+                <span id="booking-card-rating" class="fw-bold">4.9</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-secondary small">Daily Rental rate</span>
+                <span class="text-info fw-bold" id="booking-card-rate">$0/day</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Pricing Receipt -->
+          <div class="glass-panel p-4">
+            <h4 class="fw-bold text-white mb-3 h5">Pricing Breakdown</h4>
+            
+            <div class="d-flex justify-content-between mb-2 small">
+              <span class="text-secondary">Rental Duration</span>
+              <span class="text-white font-weight-500" id="billing-days">0 days</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 small">
+              <span class="text-secondary">Vehicle Subtotal</span>
+              <span class="text-white font-weight-500" id="billing-subtotal">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 small">
+              <span class="text-secondary">Tax & Airport Surcharges (10%)</span>
+              <span class="text-white font-weight-500" id="billing-tax">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3 small">
+              <span class="text-secondary">Premium Collision Waiver (Included)</span>
+              <span class="text-info font-weight-500">$0.00</span>
+            </div>
+            
+            <hr class="border-secondary border-opacity-20 my-3">
+            
+            <div class="d-flex justify-content-between align-items-baseline">
+              <span class="text-white fw-bold">Est. Total Amount</span>
+              <span class="text-info display-6 fw-bold" id="billing-total">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-premium">
+    <div class="container text-center">
+      <p class="text-muted small mb-0">&copy; 2026 EliteDrive. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Global App JS -->
+  <script src="assets/js/app.js"></script>
+  <!-- Data JS -->
+  <script src="assets/js/data.js"></script>
+  <!-- Booking JS -->
+  <script src="assets/js/booking.js"></script>
+</body>
+</html>

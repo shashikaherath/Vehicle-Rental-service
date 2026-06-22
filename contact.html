@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | EliteDrive</title>
+  <meta name="description" content="Reach out to EliteDrive. Submit questions, report issues, or get direct support from our premium team.">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-premium fixed-top">
+    <div class="container">
+      <a class="navbar-brand navbar-brand-premium d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-speedometer2 text-info"></i>
+        <span>EliteDrive</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="listing.html">Vehicles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="about.html">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-premium" href="contact.html">Contact</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav align-items-lg-center ms-lg-2" id="navbar-auth-section">
+          <!-- Populated dynamically via app.js -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="py-5 mt-5" style="background: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, var(--bg-primary) 100%);">
+    <div class="container py-4 mt-3 text-center">
+      <span class="text-info fw-bold text-uppercase small tracking-wider">Get in Touch</span>
+      <h1 class="section-title-gradient fw-bold display-5 mt-1">We'd Love to Hear From You</h1>
+      <p class="text-secondary mx-auto mt-2" style="max-width: 600px;">Have inquiries regarding booking limits, corporate leasing, or bespoke delivery? Drop a line below.</p>
+    </div>
+  </header>
+
+  <!-- Contact Section Content -->
+  <main class="pb-5">
+    <div class="container">
+      <div class="row g-4">
+        
+        <!-- Left Side: Contact Information & Mock Map -->
+        <div class="col-lg-5">
+          <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+              <h3 class="fw-bold text-white mb-4 h5">Contact Information</h3>
+              
+              <div class="d-flex gap-3 align-items-start mb-4">
+                <div class="service-icon-wrapper mb-0" style="width: 45px; height: 45px; font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="bi bi-geo-alt"></i>
+                </div>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">Global Headquarters</h6>
+                  <p class="text-secondary small mb-0">1200 Grand Avenue, Suite 400<br>Los Angeles, CA 90015</p>
+                </div>
+              </div>
+
+              <div class="d-flex gap-3 align-items-start mb-4">
+                <div class="service-icon-wrapper mb-0" style="width: 45px; height: 45px; font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="bi bi-telephone"></i>
+                </div>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">Direct Concierge Support</h6>
+                  <p class="text-secondary small mb-0">+1 (800) 555-DRIVE<br>+1 (213) 555-0199</p>
+                </div>
+              </div>
+
+              <div class="d-flex gap-3 align-items-start mb-4">
+                <div class="service-icon-wrapper mb-0" style="width: 45px; height: 45px; font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="bi bi-envelope"></i>
+                </div>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">E-mail Correspondence</h6>
+                  <p class="text-secondary small mb-0">support@elitedrive.rentals<br>partnerships@elitedrive.rentals</p>
+                </div>
+              </div>
+
+              <div class="d-flex gap-3 align-items-start mb-4">
+                <div class="service-icon-wrapper mb-0" style="width: 45px; height: 45px; font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="bi bi-clock"></i>
+                </div>
+                <div>
+                  <h6 class="text-white mb-1 small fw-semibold">Showroom Operating Hours</h6>
+                  <p class="text-secondary small mb-0">Mon - Fri: 8:00 AM - 10:00 PM<br>Sat - Sun: 9:00 AM - 8:00 PM</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stylized Mock Map Panel -->
+            <div class="map-container d-flex flex-column align-items-center justify-content-center p-3 text-center border-glass position-relative">
+              <!-- Grid overlay pattern -->
+              <div class="position-absolute w-100 h-100 top-0 left-0 bg-opacity-10 bg-info" style="background-image: radial-gradient(var(--border-glass) 1px, transparent 0); background-size: 20px 20px; pointer-events: none;"></div>
+              <i class="bi bi-pin-map text-info display-4 mb-3 position-relative z-1"></i>
+              <h5 class="text-white fw-bold h6 position-relative z-1">EliteDrive Downtown HQ Location</h5>
+              <p class="text-secondary small mb-3 max-width-280 position-relative z-1" style="max-width: 280px;">Map integrations will load when connecting live production servers.</p>
+              <button onclick="window.open('https://maps.google.com', '_blank')" class="btn btn-premium-outline btn-sm position-relative z-1">Open in Google Maps</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Side: Contact Form -->
+        <div class="col-lg-7">
+          <div class="card-premium p-4 p-md-5 shadow-sm">
+            <h3 class="fw-bold text-white mb-4 h5">Send Us a Message</h3>
+            
+            <form id="contact-form" novalidate>
+              <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                  <label for="contact-name" class="form-label text-secondary small">Full Name</label>
+                  <input type="text" id="contact-name" class="form-control form-control-premium" placeholder="Your Name" required>
+                  <div class="invalid-feedback">Please provide your name.</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for="contact-email" class="form-label text-secondary small">Email Address</label>
+                  <input type="email" id="contact-email" class="form-control form-control-premium" placeholder="name@example.com" required>
+                  <div class="invalid-feedback">Please provide a valid email.</div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="contact-subject" class="form-label text-secondary small">Subject</label>
+                <select id="contact-subject" class="form-select form-control-premium" required>
+                  <option value="" disabled selected>Select subject...</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                  <option value="Booking Modification">Booking Modification</option>
+                  <option value="Corporate Partnerships">Corporate Partnerships</option>
+                  <option value="Billing & Refund">Billing & Refund</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="invalid-feedback">Please pick a subject category.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="contact-message" class="form-label text-secondary small">Message</label>
+                <textarea id="contact-message" class="form-control form-control-premium" rows="5" placeholder="Write your message detail here..." required></textarea>
+                <div class="invalid-feedback">Message content cannot be blank.</div>
+              </div>
+
+              <button type="submit" class="btn btn-premium-primary py-3 px-4">
+                <i class="bi bi-send me-2"></i> Submit Inquiry
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-premium">
+    <div class="container text-center">
+      <p class="text-muted small mb-0">&copy; 2026 EliteDrive. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Global App JS -->
+  <script src="assets/js/app.js"></script>
+  <!-- Contact Action Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Prefill Name and Email if logged in
+      const currentUserJson = localStorage.getItem("currentUser");
+      if (currentUserJson) {
+        const currentUser = JSON.parse(currentUserJson);
+        document.getElementById("contact-name").value = currentUser.name;
+        document.getElementById("contact-email").value = currentUser.email;
+      }
+
+      const form = document.getElementById("contact-form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("contact-name").value.trim();
+        const email = document.getElementById("contact-email").value.trim();
+        const subject = document.getElementById("contact-subject").value;
+        const message = document.getElementById("contact-message").value.trim();
+
+        let isValid = true;
+
+        if (!name) {
+          document.getElementById("contact-name").classList.add("is-invalid");
+          isValid = false;
+        } else {
+          document.getElementById("contact-name").classList.remove("is-invalid");
+        }
+
+        if (!email || !email.includes("@")) {
+          document.getElementById("contact-email").classList.add("is-invalid");
+          isValid = false;
+        } else {
+          document.getElementById("contact-email").classList.remove("is-invalid");
+        }
+
+        if (!subject) {
+          document.getElementById("contact-subject").classList.add("is-invalid");
+          isValid = false;
+        } else {
+          document.getElementById("contact-subject").classList.remove("is-invalid");
+        }
+
+        if (!message) {
+          document.getElementById("contact-message").classList.add("is-invalid");
+          isValid = false;
+        } else {
+          document.getElementById("contact-message").classList.remove("is-invalid");
+        }
+
+        if (!isValid) return;
+
+        // Display Success Toast using the shared global function
+        if (typeof showToast === "function") {
+          showToast("Thank you, " + name + "! Your inquiry has been submitted successfully.", "success");
+        }
+
+        // Reset the form values
+        form.reset();
+        
+        // Re-inject user info if they are logged in
+        if (currentUserJson) {
+          const currentUser = JSON.parse(currentUserJson);
+          document.getElementById("contact-name").value = currentUser.name;
+          document.getElementById("contact-email").value = currentUser.email;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
