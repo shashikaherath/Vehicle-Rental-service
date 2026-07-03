@@ -1,7 +1,7 @@
 <%@ page import="model.User" %>
 <%
-    User currentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
-    User adminUser = (session != null) ? (User) session.getAttribute("adminUser") : null;
+    User navCurrentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+    User navAdminUser = (session != null) ? (User) session.getAttribute("adminUser") : null;
 %>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-premium fixed-top">
@@ -29,20 +29,20 @@
         </li>
       </ul>
       <ul class="navbar-nav align-items-lg-center ms-lg-2">
-        <% if (adminUser != null) { %>
+        <% if (navAdminUser != null) { %>
           <li class="nav-item">
             <a class="nav-link nav-link-premium" href="admin/index.jsp">Admin Panel</a>
           </li>
           <li class="nav-item d-flex align-items-center ms-lg-3 mt-2 mt-lg-0">
-            <span class="text-white me-3 font-weight-500">Hello, <%= adminUser.getName() %></span>
+            <span class="text-white me-3 font-weight-500">Hello, <%= navAdminUser.getName() %></span>
             <a href="logout" class="btn btn-premium-outline py-2 px-3 text-decoration-none">Logout</a>
           </li>
-        <% } else if (currentUser != null) { %>
+        <% } else if (navCurrentUser != null) { %>
           <li class="nav-item">
             <a class="nav-link nav-link-premium" href="my-bookings">My Bookings</a>
           </li>
           <li class="nav-item d-flex align-items-center ms-lg-3 mt-2 mt-lg-0">
-            <span class="text-white me-3 font-weight-500">Hello, <%= currentUser.getName() %></span>
+            <span class="text-white me-3 font-weight-500">Hello, <%= navCurrentUser.getName() %></span>
             <a href="logout" class="btn btn-premium-outline py-2 px-3 text-decoration-none">Logout</a>
           </li>
         <% } else { %>

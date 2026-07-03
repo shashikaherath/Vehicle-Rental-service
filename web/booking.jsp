@@ -5,11 +5,8 @@
 <%
     // Ensure the customer is logged in to book
     User user = (User) session.getAttribute("currentUser");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
 
+    // Capture vehicleId from request (do this before any redirect)
     String vehicleIdStr = request.getParameter("vehicleId");
     int vehicleId = 1;
     if (vehicleIdStr != null && !vehicleIdStr.isEmpty()) {
@@ -19,6 +16,16 @@
             // ignore
         }
     }
+
+    if (user == null) {
+        // Save the intended vehicle so we can return here after login
+        session.setAttribute("pendingVehicleId", vehicleId);
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
+    // Clear any pending vehicle stored from a previous unauthenticated attempt
+    session.removeAttribute("pendingVehicleId");
 
     VehicleDAO vehicleDAO = new VehicleDAO();
     Vehicle selectedVehicle = vehicleDAO.getVehicleById(vehicleId);
@@ -77,8 +84,16 @@
         <div class="col-lg-7">
           <div class="card card-premium p-4 p-md-5 shadow-lg">
             <h2 class="section-title-gradient fw-bold mb-4">Confirm Rental Booking</h2>
+
+            <%
+              String bookingError = (String) session.getAttribute("errorMsg");
+              if (bookingError != null) { session.removeAttribute("errorMsg"); %>
+            <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-20 text-danger small p-3 mb-4">
+              <i class="bi bi-x-circle-fill me-2"></i><%= bookingError %>
+            </div>
+            <% } %>
             
-            <form action="booking" method="POST">
+            <form id="booking-form" action="${pageContext.request.contextPath}/booking" method="POST">
               <input type="hidden" name="action" value="create">
               <input type="hidden" name="vehicleId" value="<%= selectedVehicle.getId() %>">
 
@@ -104,12 +119,30 @@
                 </div>
               </div>
 
-              <div class="alert alert-info bg-info bg-opacity-10 border-info border-opacity-20 text-secondary small mt-4 p-3 mb-4" role="alert">
+              <!-- Driver Specifications -->
+              <h3 class="fw-bold text-white mb-3 h5 border-top border-secondary border-opacity-10 pt-4 mt-4">Driver Specifications</h3>
+              <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                  <label class="form-label text-secondary small">Name on Driver's License</label>
+                  <input type="text" class="form-control form-control-premium" readonly value="<%= user.getName() %>">
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label text-secondary small">Contact Number</label>
+                  <input type="text" class="form-control form-control-premium" readonly value="<%= user.getPhone() != null ? user.getPhone() : "" %>">
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label text-secondary small">Special Requests (Optional)</label>
+                <textarea name="comments" class="form-control form-control-premium" rows="3" placeholder="e.g. child seats, airport terminal meet & greet, specific vehicle adjustments"></textarea>
+              </div>
+
+              <div class="alert alert-info bg-info bg-opacity-10 border-info border-opacity-20 text-secondary small p-3 mb-4" role="alert">
                 <i class="bi bi-info-circle-fill me-2 text-info"></i>No upfront payment required! You will settle charges in cash or credit card at the pickup counter.
               </div>
 
               <button type="submit" class="btn btn-premium-primary w-100 py-3">
-                <i class="bi bi-calendar-check-fill me-2"></i> Book Ride Now
+                <i class="bi bi-calendar-check-fill me-2"></i> Confirm & Authorize Booking
               </button>
             </form>
           </div>
@@ -125,23 +158,32 @@
     const pricePerDay = <%= selectedVehicle.getPricePerDay() %>;
 
     function calculateDuration() {
-        const startInput = document.getElementById("pickupDate").value;
-        const endInput = document.getElementById("returnDate").value;
+        const startInput = document.getElementById("pickupDate");
+        const endInput = document.getElementById("returnDate");
         const durationEl = document.getElementById("summaryDuration");
         const totalEl = document.getElementById("summaryTotal");
 
-        if (startInput && endInput) {
-            const start = new Date(startInput);
-            const end = new Date(endInput);
-            const diffTime = Math.abs(end - start);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1; 
+        const startVal = startInput.value;
+        const endVal = endInput.value;
+
+        if (startVal) {
+            endInput.min = startVal;
+        }
+
+        if (startVal && endVal) {
+            const start = new Date(startVal);
+            const end = new Date(endVal);
 
             if (end >= start) {
-                durationEl.textContent = `${diffDays} Day(s)`;
-                totalEl.textContent = `$${(diffDays * pricePerDay).toFixed(2)}`;
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+                durationEl.textContent = diffDays + ' Day(s)';
+                totalEl.textContent = '$' + (diffDays * pricePerDay).toFixed(2);
+                endInput.setCustomValidity('');
             } else {
-                durationEl.textContent = "0 Days";
-                totalEl.textContent = "$0.00";
+                durationEl.textContent = '0 Days';
+                totalEl.textContent = '$0.00';
+                endInput.setCustomValidity('Return date cannot be before pickup date.');
             }
         }
     }

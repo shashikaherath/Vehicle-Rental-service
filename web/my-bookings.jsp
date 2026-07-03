@@ -19,6 +19,8 @@
 
     String successMsg = (String) session.getAttribute("successMsg");
     session.removeAttribute("successMsg");
+    String errorMsg = (String) session.getAttribute("errorMsg");
+    session.removeAttribute("errorMsg");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,6 +96,13 @@
       <% if (successMsg != null) { %>
       <div class="alert alert-success alert-dismissible fade show mb-4">
         <i class="bi bi-check-circle-fill me-2"></i><%= successMsg %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      <% } %>
+
+      <% if (errorMsg != null) { %>
+      <div class="alert alert-danger alert-dismissible fade show mb-4">
+        <i class="bi bi-x-circle-fill me-2"></i><%= errorMsg %>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
       <% } %>

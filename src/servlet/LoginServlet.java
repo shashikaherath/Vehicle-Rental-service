@@ -41,8 +41,15 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("admin/index.jsp");
             } else {
                 session.setAttribute("currentUser", user);
-                // Redirect customer to homepage
-                response.sendRedirect("index.jsp");
+                // If user was trying to book a vehicle before login, send them back
+                Integer pendingVehicleId = (Integer) session.getAttribute("pendingVehicleId");
+                if (pendingVehicleId != null) {
+                    session.removeAttribute("pendingVehicleId");
+                    response.sendRedirect("booking.jsp?vehicleId=" + pendingVehicleId);
+                } else {
+                    // Redirect customer to homepage
+                    response.sendRedirect("index.jsp");
+                }
             }
         } else {
             // Authentication failed
